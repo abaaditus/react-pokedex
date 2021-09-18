@@ -12,11 +12,10 @@ import Lists from './components/Lists/Lists';
 
 import { IPokemon, IPokemonType, IPokemonResponse } from './types/pokemon';
 import Loader from './components/Loader/Loader';
-
+import LoadMore from './components/Lists/LoadMore';
 
 const formatResponse = async (url: string) => {
   const { data } = await pokemonInstance.get(url);
-  console.log(data);
   return {
     name: data.name,
     pokedexNumber: padStart(data.id, 3, '0'),
@@ -28,33 +27,42 @@ const formatResponse = async (url: string) => {
 
 function App() {
   const [pokemons, setPokemons] = useState<IPokemon[]>([]);
+  const [offset, setOffset] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(12);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getPokemons = async () => {
-      const { data }: AxiosResponse = await pokemonInstance.get('/pokemon?limit=48&offset=0');
+      const { data }: AxiosResponse = await pokemonInstance.get(`/pokemon?limit=${limit}&offset=${offset}`);
       const pokemonPromises = data.results.map((value: IPokemonResponse) => {
         return formatResponse(value.url);
       });
-      setPokemons(await Promise.all(pokemonPromises));
+      const pokemons = await Promise.all(pokemonPromises);
+      setPokemons(prevPokemons => {
+        return [...prevPokemons, ...pokemons] as IPokemon[];
+      });
+      setIsLoading(false);
     };
     getPokemons();
-  }, []);
+  }, [limit, offset]);
+
+  const loadMoreHandler = () => {
+    setIsLoading(true);
+    setOffset(limit);
+    setLimit(prevLimit => {
+      return limit + 12;
+    });
+  };
 
   const renderList = () => {
     return (
       <>
         <Lists items={pokemons} />
-        <div className="mb-7 flex justify-center">
-          <button className="font-bold text-white rounded border-b-2 border-red-500 bg-red-500 hover:border-red-800 shadow-md py-2 px-6 inline-flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            <span className="mr-2">Load More</span>
-          </button>
-        </div>
+        {isLoading ? <Loader /> : <LoadMore onLoadMore={loadMoreHandler} />}
       </>
     )
   }
+
   return (
     <>
       <Header />
