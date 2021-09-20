@@ -7,7 +7,6 @@ interface IListProps {
 }
 
 const Lists: React.FunctionComponent<IListProps> = ({ items = [] }) => {
-    console.log(items);
     return (
         <div className="my-16 flex flex-wrap gap-x-5 gap-y-5 justify-center ">
             {

@@ -79,8 +79,8 @@ const Card: React.FunctionComponent<ICardProps> = ({ name, pokedexNumber, types 
     return (
         <div className="flex items-center" style={cardStyles}>
             <div className="p-5 bg-white rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 w-full h-full transition-all transform duration-500">
-                <div className="flex" style={imgStyles}>
-                    <img className="w-36 m-auto object-cover rounded-md" src={imgUrl} alt="" />
+                <div className="flex" >
+                    <img className="w-36 m-auto object-scale-down rounded-md" style={imgStyles} src={imgUrl} alt="" />
                 </div>
                 <div className="mt-2">
                     <h1 className="text-xl font-bold text-gray-700 text-center">{upperFirst(name)}</h1>
