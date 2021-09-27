@@ -104,7 +104,7 @@ export default function Modal() {
                                             </div>
                                             <div className="bg-red-100 rounded-xl p-5">
                                                 <h5 className="font-bold">WEAKNESS</h5>
-                                                <div className="h-full pt-2 pb-5 flex gap-2 flex-col">
+                                                <div className="h-full pt-2 pb-5 flex gap-2 flex-col md:flex-row">
                                                     <img className="m-auto rounded-md" src={process.env.PUBLIC_URL + '/static/images/32px-Pokémon_Fire_Type_Icon.svg.png'} alt="" />
                                                     <img className="m-auto rounded-md" src={process.env.PUBLIC_URL + '/static/images/32px-Pokémon_Flying_Type_Icon.svg.png'} alt="" />
                                                     <img className="m-auto rounded-md" src={process.env.PUBLIC_URL + '/static/images/32px-Pokémon_Ice_Type_Icon.svg.png'} alt="" />
