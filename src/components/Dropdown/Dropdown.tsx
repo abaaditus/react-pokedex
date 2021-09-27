@@ -3,6 +3,12 @@ import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 
+const emptyState = {
+    id: 0,
+    name: '',
+    avatar: '',
+};
+
 const people = [
     {
         id: 1,
@@ -70,8 +76,8 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
-    const [selected, setSelected] = useState(people[3])
+export default function Dropdown() {
+    const [selected, setSelected] = useState(emptyState)
 
     return (
         <div className="flex-auto">
@@ -79,10 +85,9 @@ export default function Example() {
                 {({ open }) => (
                     <>
                         <div className="mt-1 relative">
-                            <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-lg pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-lg pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm">
                                 <span className="flex items-center">
-                                    <img src={selected.avatar} alt="" className="flex-shrink-0 h-6 w-6 rounded-full" />
-                                    <span className="ml-3 block truncate">{selected.name}</span>
+                                    <span className="ml-3 block truncate">{selected.name || 'DROPDOWN'}</span>
                                 </span>
                                 <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                     <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -111,7 +116,6 @@ export default function Example() {
                                             {({ selected, active }) => (
                                                 <>
                                                     <div className="flex items-center">
-                                                        <img src={person.avatar} alt="" className="flex-shrink-0 h-6 w-6 rounded-full" />
                                                         <span
                                                             className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
                                                         >

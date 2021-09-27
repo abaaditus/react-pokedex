@@ -9,7 +9,9 @@ module.exports = {
     }
   },
   variants: {
-    extend: {},
+    extend: {
+      ringWidth: ['responsive', 'focus-within', 'focus', 'hover']
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
