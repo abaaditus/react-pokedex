@@ -85,9 +85,10 @@ export default function Dropdown() {
                 {({ open }) => (
                     <>
                         <div className="mt-1 relative">
-                            <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-lg pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                            <span className="block pb-2 pl-1  text-gray-500">Region</span>
+                            <Listbox.Button className="relative w-full bg-white  rounded-md shadow-md pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm">
                                 <span className="flex items-center">
-                                    <span className="ml-3 block truncate">{selected.name || 'DROPDOWN'}</span>
+                                    <span className={(selected.name ? '' : 'text-gray-600 text-opacity-50 ') + "ml-3 block truncate"} >{selected.name || 'DROPDOWN'}</span>
                                 </span>
                                 <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                     <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -101,7 +102,7 @@ export default function Dropdown() {
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                                <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-md max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                                     {people.map((person) => (
                                         <Listbox.Option
                                             key={person.id}

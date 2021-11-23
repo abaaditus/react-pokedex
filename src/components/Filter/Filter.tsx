@@ -1,54 +1,34 @@
-import React, { MouseEventHandler } from 'react';
-import { ResolvedModuleWithFailedLookupLocations } from 'typescript';
+import React from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 
-const Filter = () => {
-    const resetHandler = (ev: MouseEvent) => {
-        console.log('reset from');
-    };
-
+const FilterExperiment = () => {
     return (
         <>
-            <form>
-                <div className="relative rounded-md shadow-md">
-                    <input
-                        type="text"
-                        name="input-filter"
-                        id="input-filter"
-                        className="focus:ring-red-500 focus:border-red-500 flex-1 block w-full rounded-none rounded-md sm:text-sm md:text-lg border-gray-300 p-4 shadow-md placeholder-gray-500 placeholder-opacity-50"
-                        placeholder="Search pokemon"
-                    />
-
-                    <button
-                        type="submit"
-                        id="btn-search"
-                        className="absolute right-14 top-2 border border-transparent rounded text-base text-white shadow-md bg-blue-500 ring-blue-300 hover:ring-2 hover:ring-offset-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
-
-                    <button
-                        type="button"
-                        id="btn-reset"
-
-                        className="absolute right-3 top-2 border border-transparent rounded text-base text-white shadow-md bg-red-500 ring-red-300 hover:bg-red-600 hover:ring-2 hover:ring-offset-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                    </button>
+            <div className="flex relative items-center">
+                <input
+                    type="text"
+                    name="input-filter"
+                    id="input-filter"
+                    className="focus:ring-4 focus:ring-red-500 focus:border-red-500 flex-1 block w-full rounded-none rounded-md sm:text-sm md:text-lg border-0 p-2 pl-12 shadow-md placeholder-gray-600 placeholder-opacity-50"
+                    placeholder="Search pokemon"
+                    autoComplete="off"
+                />
+                <div className="absolute left-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                 </div>
-                {/* <div className="mt-8 gap-4 flex flex-wrap justify-between flex-col lg:flex-row">
-                    <Dropdown />
-                    <Dropdown />
-                    <Dropdown />
-                    <Dropdown />
-                    <Dropdown />
-                </div> */}
-            </form>
+
+                <button className="bg-green-400 active:bg-green-600 active:ring-4 ring-green-700 ring-offset-2 ml-2 shadow-lg text-white text-base rounded-md px-4 py-2 font-semibold transition duration-3000" type="button">Search</button>
+            </div>
+
+            <div className="mt-8 gap-4 flex flex-wrap justify-between flex-col lg:flex-row">
+                <Dropdown />
+                <Dropdown />
+                <Dropdown />
+            </div>
         </>
-    );
+    )
 };
 
-export default Filter;
+export default FilterExperiment;
