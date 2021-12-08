@@ -89,7 +89,10 @@ const Card: React.FunctionComponent<ICardProps> = ({ name, pokedexNumber, types 
                         {
                             types.map(name => {
                                 return (
-                                    <span className="text-xs block font-bold py-2 px-4 text-black rounded-xl shadow hover:shadow-md transition duration-300" style={{ backgroundColor: getTypeStyle(name) }}>
+                                    <span
+                                        key={name + pokedexNumber}
+                                        className="text-xs block font-bold py-2 px-4 text-black rounded-xl shadow hover:shadow-md transition duration-300"
+                                        style={{ backgroundColor: getTypeStyle(name) }}>
                                         {upperCase(name)}
                                     </span>
                                 );

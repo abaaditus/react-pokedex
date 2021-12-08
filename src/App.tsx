@@ -1,42 +1,39 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { padStart } from 'lodash';
 import { AxiosResponse } from 'axios';
-
+import { padStart } from 'lodash';
 import './App.css';
 
-import { pokemonInstance } from './pokemon-axios';
 import Header from './components/Header/Header';
 import Filter from './components/Filter/Filter';
 import Main from './components/Main/Main';
 import Lists from './components/Lists/Lists';
 import Modal from './components/Modal/Modal';
 
-import { IPokemon, IPokemonType, IPokemonResponse } from './types/pokemon';
+import { IPokemon, IPokemonResponse } from './types/pokemon';
 import Loader from './components/Loader/Loader';
 import LoadMore from './components/Lists/LoadMore';
 
-const formatResponse = async (url: string) => {
-  const { data } = await pokemonInstance.get(url);
-  return {
-    name: data.name,
-    pokedexNumber: padStart(data.id, 3, '0'),
-    types: data.types.map(({ type }: IPokemonType) => {
-      return type.name;
-    })
-  };
-};
+import { getPokemonDetails } from './services/pokemonServices';
+import { formatListResponse } from './utils/formatData';
+
+import { IPokemonType } from './types/pokemon';
+import { pokemonInstance } from './pokemon-axios';
+
 interface IList {
   limit: number;
   offset: number;
   data: IPokemon[];
 }
 interface IParams {
-  type: string;
-  region: string;
-  weakness: string;
+  types: [];
+  regions: [];
+  weaknesses: [];
 }
-interface IFilter extends IParams {
+interface IFilter {
   keyword: string;
+  type: '';
+  region: '';
+  weakness: '';
 }
 interface IState {
   isLoading: boolean;
@@ -53,9 +50,16 @@ interface IARequestList {
   type: 'request_list';
   payload: { isLoading: boolean }
 };
+interface IALoadParams {
+  type: 'load_params';
+  payload: {
+    regions: [],
+    types: [],
+    weaknesses: [],
+  }
+};
 
-// type TAction = { type: 'loadlist', payload: { data: IPokemon[] } }
-type TAction = IALoadList | IARequestList;
+type TAction = IALoadList | IARequestList | IALoadParams;
 
 const initialState: IState = {
   isLoading: false,
@@ -71,9 +75,9 @@ const initialState: IState = {
     weakness: '',
   },
   params: {
-    region: '',
-    type: '',
-    weakness: '',
+    regions: [],
+    types: [],
+    weaknesses: [],
   },
 };
 
@@ -94,25 +98,58 @@ const reducer = (state: IState = initialState, action: TAction): IState => {
           data: [...data, ...action.payload.data]
         }
       };
+    case 'load_params':
+      return {
+        ...state,
+        params: {
+          regions: [...action.payload.regions],
+          types: [...action.payload.types],
+          weaknesses: [...action.payload.weaknesses],
+        }
+      }
     default:
       return state;
   }
 };
 
+const formatResponse = async (url: string) => {
+  const { data } = await pokemonInstance.get(url);
+  return {
+    name: data.name,
+    pokedexNumber: padStart(data.id, 3, '0'),
+    types: data.types.map(({ type }: IPokemonType) => {
+      return type.name;
+    })
+  };
+};
+
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  // const [pokemons, setPokemons] = useState<IPokemon[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(12);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  /*
   useEffect(() => {
     const getParams = async () => {
-      const { data: regions }: AxiosResponse = await pokemonInstance.get('/region');
-      console.log('regions: ', regions);
+      const { data: regionResponse }: AxiosResponse = await pokemonInstance.get('/region');
+      const { data: typeResponse }: AxiosResponse = await pokemonInstance.get('/type');
+
+      const regionList = regionResponse.results.map(formatListResponse);
+      const typeList = typeResponse.results.map(formatListResponse);
+
+      dispatch({
+        type: 'load_params',
+        payload: {
+          regions: regionList,
+          types: typeList,
+          weaknesses: typeList,
+        }
+      });
     };
     getParams();
   }, []);
+*/
 
   useEffect(() => {
     const getPokemons = async () => {
@@ -155,7 +192,7 @@ function App() {
     return (
       <>
         <Lists items={state.list.data} />
-        {isLoading ? <Loader /> : <LoadMore onLoadMore={loadMoreHandler} />}
+        {state.isLoading ? <Loader /> : <LoadMore onLoadMore={loadMoreHandler} />}
       </>
     )
   }
@@ -164,6 +201,11 @@ function App() {
     <>
       <Header />
       <Main>
+        {/* <Filter
+          regions={state.params.regions}
+          types={state.params.types}
+          weaknesses={state.params.weaknesses}
+        /> */}
         <Filter />
         {state.list.data.length ? renderList() : <Loader />}
       </Main>

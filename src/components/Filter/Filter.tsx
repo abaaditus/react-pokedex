@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from '../../states/params';
 import Dropdown from '../Dropdown/Dropdown';
 
-const FilterExperiment = () => {
+interface IFilterProps {
+    regions: [],
+    types: [],
+    weaknesses: [],
+}
+
+// const Filter: React.FunctionComponent<IFilterProps> = ({
+const Filter = () => {
+    const { params, getParams } = useParams();
+
+    useEffect(() => {
+        const fetchParamList = async () => {
+            await getParams();
+        };
+
+        fetchParamList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // if (regions.length === 0 || types.length === 0 || weaknesses.length === 0) {
+    //     return null;
+    // }
+
+    if (params.regions.length === 0 || params.types.length === 0 || params.weaknesses.length === 0) {
+        return null;
+    }
+
     return (
         <>
             <div className="flex relative items-center">
@@ -15,7 +42,7 @@ const FilterExperiment = () => {
                 />
                 <div className="absolute left-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
 
@@ -23,12 +50,12 @@ const FilterExperiment = () => {
             </div>
 
             <div className="mt-8 gap-4 flex flex-wrap justify-between flex-col lg:flex-row">
-                <Dropdown />
-                <Dropdown />
-                <Dropdown />
+                <Dropdown label='regions' list={params.regions} />
+                <Dropdown label='types' list={params.types} />
+                <Dropdown label='weaknesses' list={params.weaknesses} />
             </div>
         </>
     )
 };
 
-export default FilterExperiment;
+export default Filter;
